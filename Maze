@@ -1,0 +1,54 @@
+def find_exit(maze):
+    start_position = None
+    for i in range(len(maze)):
+        if 'S' in maze[i]:
+            start_position = (i, maze[i].index('S'))
+            break
+
+    if start_position is None:
+        print("Ошибка: Не найден стартовый символ 'S' в лабиринте.")
+        return
+
+    directions = [(1, 0), (0, -1), (-1, 0), (0, 1)]
+    current_direction = 0
+
+    current_position = start_position
+
+    while True:
+        if maze[current_position[0]][current_position[1]] == 'E':
+            print("Выход найден!")
+            break
+
+        new_direction = (current_direction - 1) % 4
+        new_position = (
+            current_position[0] + directions[new_direction][0],
+            current_position[1] + directions[new_direction][1]
+        )
+
+        if 0 <= new_position[0] < len(maze) and 0 <= new_position[1] < len(maze[0]) and maze[new_position[0]][new_position[1]] != '#':
+            current_direction = new_direction
+            current_position = new_position
+        else:
+            new_position = (
+                current_position[0] + directions[current_direction][0],
+                current_position[1] + directions[current_direction][1]
+            )
+
+            if 0 <= new_position[0] < len(maze) and 0 <= new_position[1] < len(maze[0]) and maze[new_position[0]][new_position[1]] != '#':
+                current_position = new_position
+            else:
+                current_direction = (current_direction + 1) % 4
+
+# Пример лабиринта (S - старт, E - выход, # - стена)
+maze = [
+    ['#', 'E', '#', '#', '#'],
+    ['#', ' ', '#', ' ', '#'],
+    ['#', ' ', ' ', ' ', '#'],
+    ['#', '#', '#', ' ', '#'],
+    ['#', ' ', ' ', ' ', '#'],
+    ['#', ' ', '#', ' ', '#'],
+    ['#', ' ', '#', ' ', '#'],
+    ['#', '#', '#', 'S', '#'],
+]
+
+find_exit(maze)
